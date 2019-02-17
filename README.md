@@ -1,2 +1,2 @@
 # SLR-parser-table-in-cpp
-This project deals with an SLR(1) parser simulator using C++. Given the grammar rules it constructs the SLR(1) parsing table.
+This project implements a C++ code which builds an SLR(1) parser table, given the production rules of a grammar. The code outputs the parsing process step by step and shows the status after each step. The SLR table is printed using C++ in which "ACC" denotes the entry for which the input is accepted after parsing. The only drawback of this code is that the grammar cannot contain two letter terminals. 
