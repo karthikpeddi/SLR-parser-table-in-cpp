@@ -11,7 +11,8 @@ char goto_table[100][100];
 char reduce[20][20];
 char follow[20][20];char fo_co[20][20];
 char first[20][20];
-
+char a[100]={};
+char b={};
 struct state{
     int prod_count;
     char prod[100][100]={{}};
@@ -54,7 +55,7 @@ void get_prods(struct state *I){
 }
 
 bool is_non_terminal(char a){
-   if (a >= 'A' && a <= 'Z')
+    if (a >= 'A' && a <= 'Z')
         return true;
     else
         return false;
@@ -78,7 +79,6 @@ char char_after_dot(char a[100]){
 }
 
 char* move_dot(char b[100],int len){
-    char a[100]={};
     strcpy(a,b);
     for(int i=0;i<len;i++){
         if(a[i]=='.'){
@@ -108,12 +108,12 @@ bool same_state(struct state *I0,struct state *I){
 }
 
 void closure(struct state *I,struct state *I0){
-    char a={};
+
     for(int i=0;i<I0->prod_count;i++){
-        a=char_after_dot(I0->prod[i]);
-        if(is_non_terminal(a)){
+        b=char_after_dot(I0->prod[i]);
+        if(is_non_terminal(b)){
             for(int j=0;j<I->prod_count;j++){
-                if(I->prod[j][0]==a){
+                if(I->prod[j][0]==b){
                     if(!in_state(I0,I->prod[j])){
                         strcpy(I0->prod[I0->prod_count],I->prod[j]);
                         I0->prod_count++;
@@ -128,11 +128,11 @@ void goto_state(struct state *I,struct state *S,char a){
     int time=1;
     for(int i=0;i<I->prod_count;i++){
         if(char_after_dot(I->prod[i])==a){
-                if(time==1){
-                    time++;
-                }
-                strcpy(S->prod[S->prod_count],move_dot(I->prod[i],strlen(I->prod[i])));
-                S->prod_count++;
+            if(time==1){
+                time++;
+            }
+            strcpy(S->prod[S->prod_count],move_dot(I->prod[i],strlen(I->prod[i])));
+            S->prod_count++;
         }
     }
 }
@@ -149,21 +149,21 @@ bool in_array(char a[20],char b){
             return true;
     return false;
 }
-
+char c[20]={};
 char* chars_after_dots(struct state *I){
-    char a[20]={};
+
     for(int i=0;i<I->prod_count;i++){
-        if(!in_array(a,char_after_dot(I->prod[i]))){
-                a[strlen(a)]=char_after_dot(I->prod[i]);
-            }
+        if(!in_array(c,char_after_dot(I->prod[i]))){
+            c[strlen(c)]=char_after_dot(I->prod[i]);
+        }
     }
     return &a[0];
 }
-
+char d[100]={};
 void cleanup_prods(struct state * I){
-    char a[100]={};
+
     for(int i=0;i<I->prod_count;i++)
-        strcpy(I->prod[i],a);
+        strcpy(I->prod[i],d);
     I->prod_count=0;
 }
 
@@ -188,7 +188,7 @@ void print_shift_table(int state_count){
         int arr[no_nt+no_t]={-1};
         for(int j=0;j<state_count;j++){
             if(goto_table[i][j]!='~'){
-                    arr[return_index(goto_table[i][j])]= j;
+                arr[return_index(goto_table[i][j])]= j;
             }
         }
         cout<<"I"<<i<<"\t";
@@ -198,10 +198,10 @@ void print_shift_table(int state_count){
             if(arr[j]==-1||arr[j]==0)
                 cout<<"\t";
             else{
-            if(j<no_t)
-                cout<<"S"<<arr[j]<<"\t";
-            else
-                cout<<arr[j]<<"\t";
+                if(j<no_t)
+                    cout<<"S"<<arr[j]<<"\t";
+                else
+                    cout<<arr[j]<<"\t";
 
             }
         }
@@ -210,9 +210,9 @@ void print_shift_table(int state_count){
 }
 
 int get_index(char c,char *a){
-for(int i=0;i<strlen(a);i++)
-    if(a[i]==c)
-    return i;
+    for(int i=0;i<strlen(a);i++)
+        if(a[i]==c)
+            return i;
 }
 
 void add_dot_at_end(struct state* I){
@@ -222,7 +222,7 @@ void add_dot_at_end(struct state* I){
 }
 
 void add_to_first(int n,char b){
-   for(int i=0;i<strlen(first[n]);i++)
+    for(int i=0;i<strlen(first[n]);i++)
         if(first[n][i]==b)
             return;
     first[n][strlen(first[n])]=b;
@@ -230,7 +230,7 @@ void add_to_first(int n,char b){
 
 void add_to_first(int m,int n){
     for(int i=0;i<strlen(first[n]);i++){
-            int flag=0;
+        int flag=0;
         for(int j=0;j<strlen(first[m]);j++){
             if(first[n][i]==first[m][j])
                 flag=1;
@@ -241,7 +241,7 @@ void add_to_first(int m,int n){
 }
 
 void add_to_follow(int n,char b){
-   for(int i=0;i<strlen(follow[n]);i++)
+    for(int i=0;i<strlen(follow[n]);i++)
         if(follow[n][i]==b)
             return;
     follow[n][strlen(follow[n])]=b;
@@ -249,7 +249,7 @@ void add_to_follow(int n,char b){
 
 void add_to_follow(int m,int n){
     for(int i=0;i<strlen(follow[n]);i++){
-            int flag=0;
+        int flag=0;
         for(int j=0;j<strlen(follow[m]);j++){
             if(follow[n][i]==follow[m][j])
                 flag=1;
@@ -261,7 +261,7 @@ void add_to_follow(int m,int n){
 
 void add_to_follow_first(int m,int n){
     for(int i=0;i<strlen(first[n]);i++){
-            int flag=0;
+        int flag=0;
         for(int j=0;j<strlen(follow[m]);j++){
             if(first[n][i]==follow[m][j])
                 flag=1;
@@ -277,7 +277,7 @@ void find_first(struct state *I){
             if(I->prod[j][0]==non_terminals[i]){
                 if(!is_non_terminal(I->prod[j][3])){
                     add_to_first(i,I->prod[j][3]);
-                    }
+                }
 
             }
         }
@@ -317,22 +317,22 @@ void print_reduce_table(int state_count,int *no_re,struct state *temp1){
     }
     cout<<endl;
     for(int i=0;i<temp1->prod_count;i++){
-    int n=no_re[i];
-    for(int j=0;j<strlen(follow[return_index(temp1->prod[i][0])-no_t]);j++){
-        for(int k=0;k<no_t;k++){
-            if(follow[return_index(temp1->prod[i][0])-no_t][j]==terminals[k])
-                arr[i][k]=i+1;
+        int n=no_re[i];
+        for(int j=0;j<strlen(follow[return_index(temp1->prod[i][0])-no_t]);j++){
+            for(int k=0;k<no_t;k++){
+                if(follow[return_index(temp1->prod[i][0])-no_t][j]==terminals[k])
+                    arr[i][k]=i+1;
+            }
         }
+        cout<<"I"<<n<<"\t";
+        for(int j=0;j<no_t;j++){
+            if(arr[i][j]!=-1&&arr[i][j]!=0&&arr[i][j]<state_count)
+                cout<<"R"<<arr[i][j]<<"\t";
+            else
+                cout<<"\t";
+        }
+        cout<<endl;
     }
-    cout<<"I"<<n<<"\t";
-    for(int j=0;j<no_t;j++){
-        if(arr[i][j]!=-1&&arr[i][j]!=0&&arr[i][j]<state_count)
-            cout<<"R"<<arr[i][j]<<"\t";
-        else
-            cout<<"\t";
-    }
-    cout<<endl;
-}
 }
 
 int main(){
@@ -355,10 +355,13 @@ int main(){
     print_prods(&I[0]);
 
     char characters[20]={};
+    for(int i=0;i<20;i++){
+        characters[i]='~';
+    }
     for(int i=0;i<state_count;i++){
         char characters[20]={};
         for(int z=0;z<I[i].prod_count;z++)
-                if(!in_array(characters,char_after_dot(I[i].prod[z])))
+            if(!in_array(characters,char_after_dot(I[i].prod[z])))
                 characters[strlen(characters)]=char_after_dot(I[i].prod[z]);
 
 
@@ -390,17 +393,17 @@ int main(){
     for(int i=0;i<state_count;i++){
         for(int j=0;j<I[i].prod_count;j++)
             for(int k=0;k<temp1.prod_count;k++)
-                 if(in_state(&I[i],temp1.prod[k]))
-                        no_re[k]=i;
+                if(in_state(&I[i],temp1.prod[k]))
+                    no_re[k]=i;
     }
 
     find_first(&temp);
     for(int l=0;l<no_nt;l++){
-    for(int i=0;i<temp.prod_count;i++){
-        if(is_non_terminal(temp.prod[i][3])){
-            add_to_first(return_index(temp.prod[i][0])-no_t,return_index(temp.prod[i][3])-no_t);
-        }
-    }}
+        for(int i=0;i<temp.prod_count;i++){
+            if(is_non_terminal(temp.prod[i][3])){
+                add_to_first(return_index(temp.prod[i][0])-no_t,return_index(temp.prod[i][3])-no_t);
+            }
+        }}
 
     find_follow(&temp);
     add_to_follow(0,'$');
@@ -408,22 +411,15 @@ int main(){
         for(int i=0;i<temp.prod_count;i++){
             for(int k=3;k<strlen(temp.prod[i]);k++){
                 if(temp.prod[i][k]==non_terminals[l]){
-                        if(is_non_terminal(temp.prod[i][k+1])){
-                            add_to_follow_first(l,return_index(temp.prod[i][k+1])-no_t);}
-                        if(temp.prod[i][k+1]=='\0')
-                            add_to_follow(l,return_index(temp.prod[i][0])-no_t);
-                            }
-                    }
+                    if(is_non_terminal(temp.prod[i][k+1])){
+                        add_to_follow_first(l,return_index(temp.prod[i][k+1])-no_t);}
+                    if(temp.prod[i][k+1]=='\0')
+                        add_to_follow(l,return_index(temp.prod[i][0])-no_t);
+                }
             }
+        }
     }
     print_shift_table(state_count);
     cout<<endl<<endl;
     print_reduce_table(state_count,&no_re[0],&temp1);
 }
-
-
-
-
-
-
-
